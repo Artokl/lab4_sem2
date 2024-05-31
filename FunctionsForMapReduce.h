@@ -14,6 +14,6 @@ bool WhereFunc(int i)
 
 template <typename T>
 T ReduceFunc(T a, T b) {
-    return a+b;
+    return a + b;
 }
 #endif //FUNCTIONSFORMAPREDUCE_H

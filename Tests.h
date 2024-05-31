@@ -10,8 +10,7 @@ void TestCreateTree()
 {
     Tree<int> testInt;
     const int a[] = {6, 3, 9, 7, 10, 4};
-    for (int i = 0; i < 6; i++)
-    {
+    for (int i = 0; i < 6; i++) {
         testInt.insert(a[i]);
     }
     assert(testInt.Find(6) != nullptr);
@@ -41,8 +40,7 @@ void TestFindSubTree()
 {
     Tree<int> testInt;
     const int a[] = {6, 3, 9, 7, 10, 4};
-    for (int i = 0; i < 6; i++)
-    {
+    for (int i = 0; i < 6; i++) {
         testInt.insert(a[i]);
     }
     Tree<int> testInt1 = testInt.FindSubTree(9);
@@ -68,8 +66,7 @@ void TestFindSubTreeComplex()
 void TestIsSubtreeInTree() {
     Tree<int> testInt;
     const int a[] = {6, 3, 9, 7, 10, 4};
-    for (int i = 0; i < 6; i++)
-    {
+    for (int i = 0; i < 6; i++) {
         testInt.insert(a[i]);
     }
     const Tree<int> testInt1 = testInt.FindSubTree(9);
@@ -91,8 +88,7 @@ void TestIsSubtreeInTreeComplex() {
 void TestIsElemInTree() {
     Tree<int> testInt;
     const int a[] = {6, 3, 9, 7, 10, 4};
-    for (int i = 0; i < 6; i++)
-    {
+    for (int i = 0; i < 6; i++) {
         testInt.insert(a[i]);
     }
     assert(testInt.IsElemInTree(4));
@@ -109,12 +105,10 @@ void TestIsElemInTreeComplex() {
     testInt.insert(d);
     assert(testInt.IsElemInTree(complex(7,2)));
 }
-void TestMapFunc()
-{
+void TestMapFunc() {
     const int a[] = {6, 3, 9, 7, 10, 4};
     Tree<int> testInt;
-    for (int i = 0; i < 6; i++)
-    {
+    for (int i = 0; i < 6; i++) {
         testInt.insert(a[i]);
     }
     testInt.map(&MapFunc);
@@ -152,6 +146,53 @@ void TestReduceFunc()
     const int result = testInt.reduce(&ReduceFunc);
     assert(result == 39);
 }
+void TestMergeTree() {
+    const int a[] = {6, 3, 9, 7, 10, 4};
+    Tree<int> testInt;
+    for (int i = 0; i < 6; i++)
+    {
+        testInt.insert(a[i]);
+    }
+    const int b[] = {6, 2, 8, 7, 4};
+    Tree<int> testInt1;
+    for (int i = 0; i < 5; i++)
+    {
+        testInt1.insert(b[i]);
+    }
+    testInt.merge(testInt1);
+    assert(testInt.Find(12) != nullptr);
+    assert(testInt.Find(5) != nullptr);
+    assert(testInt.Find(8) != nullptr);
+    assert(testInt.Find(17) != nullptr);
+    assert(testInt.Find(14) != nullptr);
+    assert(testInt.Find(10) != nullptr);
+}
+void TestMergeTreeComplex() {
+    Tree<complex> testInt;
+    const complex a(2,1);
+    const complex b(3,4);
+    const complex c(1,5);
+    const complex d(7,2);
+    testInt.insert(a);
+    testInt.insert(b);
+    testInt.insert(c);
+    testInt.insert(d);
+    Tree<complex> testInt1;
+    const complex a1(5,2);
+    const complex b1(3,8);
+    const complex c1(2,4);
+    const complex d1(9,1);
+    testInt1.insert(a1);
+    testInt1.insert(b1);
+    testInt1.insert(c1);
+    testInt1.insert(d1);
+    testInt.merge(testInt1);
+    assert(testInt.Find(complex(7,3)) != nullptr);
+    assert(testInt.Find(complex(12,5)) != nullptr);
+    assert(testInt.Find(complex(4,13)) != nullptr);
+    assert(testInt.Find(complex(2,4)) != nullptr);
+    assert(testInt.Find(complex(7,2)) != nullptr);
+}
 void Tests() {
     TestCreateTree();
     TestCreateTreeComplex();
@@ -164,6 +205,8 @@ void Tests() {
     TestMapFunc();
     TestWhereFunc();
     TestReduceFunc();
+    TestMergeTree();
+    TestMergeTreeComplex();
 }
 
 

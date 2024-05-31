@@ -7,4 +7,7 @@ add_executable(4_lab main.cpp
         complex.h
         Tree.h
         Tests.h
-        FunctionsForMapReduce.h)
+        FunctionsForMapReduce.h
+        Ui.h
+        PrintTree.h
+        StrSwitchCase.h)

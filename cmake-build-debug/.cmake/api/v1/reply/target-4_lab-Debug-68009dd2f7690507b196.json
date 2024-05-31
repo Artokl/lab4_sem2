@@ -99,7 +99,10 @@
 				1,
 				2,
 				3,
-				4
+				4,
+				5,
+				6,
+				7
 			]
 		}
 	],
@@ -129,6 +132,21 @@
 		{
 			"backtrace" : 1,
 			"path" : "FunctionsForMapReduce.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Ui.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "PrintTree.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "StrSwitchCase.h",
 			"sourceGroupIndex" : 1
 		}
 	],

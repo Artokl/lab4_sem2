@@ -45,6 +45,10 @@ public:
         return {this->Re * item.Re - this->Im * item.Im,
             this->Re * item.Im + this->Im * item.Re};
     }
+    complex operator*(const int& item) const
+    {
+        return {this->Re * item,this->Im * item};
+    }
     complex operator/(const complex& item) const
     {
         return {(this->Re * item.Re + this->Im * item.Im) / (item.Re * item.Re + item.Im * item.Im),
@@ -52,9 +56,9 @@ public:
     }
     friend std::istream &operator>>(std::istream &in, complex &item)
     {
-        std::cout << "Enter Re part: ";
+        std::cout << "Enter Re part:";
         in >> item.Re;
-        std::cout << "Enter Im part: ";
+        std::cout << "Enter Im part:";
         in >> item.Im;
         return in;
     }
@@ -110,6 +114,13 @@ public:
     bool operator <(const complex& item) const
     {
         return Re < item.Re || (Re == item.Re && Im < item.Im);
+    }
+    complex& operator=(const complex& item) {
+        if (this != &item) {
+            Re = item.Re;
+            Im = item.Im;
+        }
+        return *this;
     }
 };
 
