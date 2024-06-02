@@ -368,6 +368,11 @@ public:
             break;
         }
     }
+
+    void clear() {
+        deleteTree(head_);
+        head_ = nullptr;
+    }
 };
 
 #endif //TREE_H

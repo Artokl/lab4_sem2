@@ -46,6 +46,7 @@ int main() {
                         CASE("ReturnBack"):
                         {
                             flag1 = 0;
+                            testInt.clear();
                             break;
                         }
                         CASE("RunTests"):
@@ -228,6 +229,7 @@ int main() {
                         CASE("ReturnBack"):
                         {
                             flag1 = 0;
+                            testComplex.clear();
                             break;
                         }
                         CASE("RunTests"):

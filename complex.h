@@ -1,6 +1,7 @@
 
 #ifndef COMPLEX_H
 #define COMPLEX_H
+
 #include <iostream>
 
 class complex
@@ -39,6 +40,14 @@ public:
     complex operator-(const complex& item) const
     {
         return {this->Re - item.Re, this->Im - item.Im};
+    }
+    complex operator+(const int& item) const
+    {
+        return {this->Re + item, this->Im};
+    }
+    complex operator-(const int& item) const
+    {
+        return {this->Re - item, this->Im};
     }
     complex operator*(const complex& item) const
     {
