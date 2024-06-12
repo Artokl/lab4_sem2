@@ -9,6 +9,20 @@ private:
     T node_;
     Node* right_;
     Node* left_;
+
+    void SetLeft(Node* node) {
+        left_ = node;
+    }
+
+    void SetRight(Node* node) {
+        right_ = node;
+    }
+
+    void SetData(T value) {
+        this->node_ = value;
+    }
+
+    template<typename> friend class Tree;
 public:
     Node() : node_(0), right_(nullptr), left_(nullptr) {}
 
@@ -26,25 +40,13 @@ public:
         return left_;
     }
 
-    void setLeft(Node *node) {
-        left_ = node;
-    }
-
-    void setRight(Node *node) {
-        right_ = node;
-    }
-
-    void SetData(T value) {
-        this->node_ = value;
-    }
-
     ~Node() {
         right_ = nullptr;
         left_ = nullptr;
     }
 };
 
-enum class traverse {
+enum class Traverse {
     KLP,
     KPL,
     LPK,
@@ -57,34 +59,33 @@ template <typename T>
 class Tree {
 private:
     Node<T>* head_;
-
-    void deleteTree(Node<T> *elem) {
+    void DeleteTree(Node<T> *elem) {
         if (elem == nullptr)
         {
             return;
         }
-        deleteTree(elem->GetLeft());
-        deleteTree(elem->GetRight());
+        DeleteTree(elem->GetLeft());
+        DeleteTree(elem->GetRight());
         delete elem;
     }
 
-    Node<T>* copyTree(Node<T>* node) {
+    Node<T>* CopyTree(Node<T>* node) {
         if (node == nullptr) {
             return nullptr;
         }
         Node<T>* newNode = new Node<T>(node->GetValue());
-        newNode->setLeft(copyTree(node->GetLeft()));
-        newNode->setRight(copyTree(node->GetRight()));
+        newNode->SetLeft(CopyTree(node->GetLeft()));
+        newNode->SetRight(CopyTree(node->GetRight()));
         return newNode;
     }
 
-    Node<T>* deleteNode(Node<T>* root, T value) {
+    Node<T>* DeleteNode(Node<T>* root, T value) {
         if (root == nullptr) return root;
         if (value < root->GetValue()) {
-            root->setLeft(deleteNode(root->GetLeft(), value));
+            root->SetLeft(DeleteNode(root->GetLeft(), value));
         }
         else if (value > root->GetValue()) {
-            root->setRight(deleteNode(root->GetRight(), value));
+            root->SetRight(DeleteNode(root->GetRight(), value));
         }
         else {
             if (root->GetLeft() == nullptr) {
@@ -97,21 +98,21 @@ private:
                 delete root;
                 return temp;
             }
-            Node<T>* temp = findMin(root->GetRight());
+            Node<T>* temp = FindMin(root->GetRight());
             root->SetData(temp->GetValue());
-            root->setRight(deleteNode(root->GetRight(), temp->GetValue()));
+            root->SetRight(DeleteNode(root->GetRight(), temp->GetValue()));
         }
         return root;
     }
 
-    Node<T>* findMin(Node<T>* node) {
+    Node<T>* FindMin(Node<T>* node) {
         Node<T>* current = node;
         while (current && current->GetLeft() != nullptr) {
             current = current->GetLeft();
         }
         return current;
     }
-    
+
     void FuncMap(Node<T> *root, T (*func)(T)) {
         if (root == nullptr) return;
         FuncMap(root->GetLeft(), func);
@@ -123,7 +124,7 @@ private:
         if (root == nullptr) return;
         FuncWhere(root->GetLeft(), func);
         FuncWhere(root->GetRight(), func);
-        if (!func(root->GetValue())) this->deleteElem(root->GetValue());
+        if (!func(root->GetValue())) this->DeleteElem(root->GetValue());
     }
 
     void FuncReduce(Node<T>* root, T(*func)(T, T), T* base) {
@@ -133,23 +134,23 @@ private:
         *base = func(root->GetValue(), *base);
     }
 
-    Node<T>* mergeTrees(Node<T>* node1, Node<T>* node2) {
-        if (node1 == nullptr) return copyTree(node2);
-        if (node2 == nullptr) return copyTree(node1);
+    Node<T>* MergeTrees(Node<T>* node1, Node<T>* node2) {
+        if (node1 == nullptr) return CopyTree(node2);
+        if (node2 == nullptr) return CopyTree(node1);
         node1->SetData(node1->GetValue() + node2->GetValue());
-        node1->setLeft(mergeTrees(node1->GetLeft(), node2->GetLeft()));
-        node1->setRight(mergeTrees(node1->GetRight(), node2->GetRight()));
+        node1->SetLeft(MergeTrees(node1->GetLeft(), node2->GetLeft()));
+        node1->SetRight(MergeTrees(node1->GetRight(), node2->GetRight()));
         return node1;
     }
 
-    void storeInOrder(Node<T>* node, Node<T>* arr[], int* index) {
+    void StoreInOrder(Node<T>* node, Node<T>* arr[], int* index) {
         if (node == nullptr) return;
-        storeInOrder(node->GetLeft(), arr, index);
+        StoreInOrder(node->GetLeft(), arr, index);
         arr[(*index)++] = node;
-        storeInOrder(node->GetRight(), arr, index);
+        StoreInOrder(node->GetRight(), arr, index);
     }
 
-    void quickSort(Node<T>* arr[], const int left, const int right) {
+    void QuickSort(Node<T>* arr[], const int left, const int right) {
         int i = left, j = right;
         Node<T>* pivot = arr[(left + right) / 2];
         while (i <= j) {
@@ -163,75 +164,84 @@ private:
                 j--;
             }
         }
-        if (left < j) quickSort(arr, left, j);
-        if (i < right) quickSort(arr, i, right);
+        if (left < j) QuickSort(arr, left, j);
+        if (i < right) QuickSort(arr, i, right);
     }
 
-    Node<T>* buildBalancedTree(Node<T>* arr[], const int start, const int end) {
+    Node<T>* BuildBalancedTree(Node<T>* arr[], const int start, const int end) {
         if (start > end) return nullptr;
         int mid = start + (end - start) / 2;
         Node<T>* root = arr[mid];
-        root->setLeft(buildBalancedTree(arr, start, mid - 1));
-        root->setRight(buildBalancedTree(arr, mid + 1, end));
+        root->SetLeft(BuildBalancedTree(arr, start, mid - 1));
+        root->SetRight(BuildBalancedTree(arr, mid + 1, end));
         return root;
     }
 
-    void correctTree() {
+    void CorrectTree() {
         if (head_ == nullptr) return;
-        int numNodes = countNodes(head_);
+        int numNodes = CountNodes(head_);
         Node<T>** nodesArray = new Node<T>*[numNodes];
         int index = 0;
-        storeInOrder(head_, nodesArray, &index);
-        quickSort(nodesArray, 0, numNodes - 1);
-        head_ = buildBalancedTree(nodesArray, 0, numNodes - 1);
+        StoreInOrder(head_, nodesArray, &index);
+        QuickSort(nodesArray, 0, numNodes - 1);
+        head_ = BuildBalancedTree(nodesArray, 0, numNodes - 1);
         delete[] nodesArray;
     }
 
-    int countNodes(Node<T>* node) {
+    int CountNodes(Node<T>* node) {
         if (node == nullptr) return 0;
-        return 1 + countNodes(node->GetLeft()) + countNodes(node->GetRight());
+        return 1 + CountNodes(node->GetLeft()) + CountNodes(node->GetRight());
     }
 
-    void traverseKLP(Node<T>* node, T* result, int& index) {
+    void TraverseKLP(Node<T>* node, T* result, int& index) {
         if (node == nullptr) return;
         result[index++] = node->GetValue();
-        traverseKLP(node->GetLeft(), result, index);
-        traverseKLP(node->GetRight(), result, index);
+        TraverseKLP(node->GetLeft(), result, index);
+        TraverseKLP(node->GetRight(), result, index);
     }
 
-    void traverseKPL(Node<T>* node, T* result, int& index) {
+    void TraverseKPL(Node<T>* node, T* result, int& index) {
         if (node == nullptr) return;
         result[index++] = node->GetValue();
-        traverseKPL(node->GetRight(), result, index);
-        traverseKPL(node->GetLeft(), result, index);
+        TraverseKPL(node->GetRight(), result, index);
+        TraverseKPL(node->GetLeft(), result, index);
     }
 
-    void traverseLPK(Node<T>* node, T* result, int& index) {
+    void TraverseLPK(Node<T>* node, T* result, int& index) {
         if (node == nullptr) return;
-        traverseLPK(node->GetLeft(), result, index);
-        traverseLPK(node->GetRight(), result, index);
-        result[index++] = node->GetValue();
-    }
-
-    void traverseLKP(Node<T>* node, T* result, int& index) {
-        if (node == nullptr) return;
-        traverseLKP(node->GetLeft(), result, index);
-        result[index++] = node->GetValue();
-        traverseLKP(node->GetRight(), result, index);
-    }
-
-    void traversePLK(Node<T>* node, T* result, int& index) {
-        if (node == nullptr) return;
-        traversePLK(node->GetRight(), result, index);
-        traversePLK(node->GetLeft(), result, index);
+        TraverseLPK(node->GetLeft(), result, index);
+        TraverseLPK(node->GetRight(), result, index);
         result[index++] = node->GetValue();
     }
 
-    void traversePKL(Node<T>* node, T* result, int& index) {
+    void TraverseLKP(Node<T>* node, T* result, int& index) {
         if (node == nullptr) return;
-        traversePKL(node->GetRight(), result, index);
+        TraverseLKP(node->GetLeft(), result, index);
         result[index++] = node->GetValue();
-        traversePKL(node->GetLeft(), result, index);
+        TraverseLKP(node->GetRight(), result, index);
+    }
+
+    void TraversePLK(Node<T>* node, T* result, int& index) {
+        if (node == nullptr) return;
+        TraversePLK(node->GetRight(), result, index);
+        TraversePLK(node->GetLeft(), result, index);
+        result[index++] = node->GetValue();
+    }
+
+    void TraversePKL(Node<T>* node, T* result, int& index) {
+        if (node == nullptr) return;
+        TraversePKL(node->GetRight(), result, index);
+        result[index++] = node->GetValue();
+        TraversePKL(node->GetLeft(), result, index);
+    }
+    Node<T> *InsertPrivate(Node<T> *root, T value) {
+        if (root == nullptr)
+            return new Node<T>(value);
+        else if (value < root->GetValue())
+            root->SetLeft(InsertPrivate(root->GetLeft(), value));
+        else if (value > root->GetValue())
+            root->SetRight(InsertPrivate(root->GetRight(), value));
+        return root;
     }
 public:
     Tree () : head_(nullptr) {}
@@ -239,20 +249,20 @@ public:
     explicit Tree (Node<T>* head) : head_(head) {}
 
     Tree(const Tree& other) {
-        head_ = copyTree(other.head_);
+        head_ = CopyTree(other.head_);
     }
 
     Tree &operator=(const Tree& other) {
         if (this == &other) {
             return *this;
         }
-        deleteTree(head_);
-        head_ = copyTree(other.head_);
+        DeleteTree(head_);
+        head_ = CopyTree(other.head_);
         return *this;
     }
 
     ~Tree() {
-        deleteTree(this->GetHead());
+        DeleteTree(this->GetHead());
     }
 
     Node<T> *Find(T value) {
@@ -273,7 +283,7 @@ public:
     Tree FindSubTree(T value) {
         Node<T>* root_ = Find(value);
         if (root_ != nullptr) {
-            Node<T>* subtreeRoot = copyTree(root_);
+            Node<T>* subtreeRoot = CopyTree(root_);
             return Tree(subtreeRoot);
         }
         return Tree(nullptr);
@@ -284,9 +294,12 @@ public:
     }
 
     bool CmpTraverse(Node<T> *first, Node<T> *second) const {
-        if (first == nullptr && second == nullptr) return true;
-        if (first == nullptr || second == nullptr) return false;
-        if (first->GetValue() != second->GetValue()) return false;
+        if (first == nullptr && second == nullptr)
+            return true;
+        if (first == nullptr || second == nullptr)
+            return false;
+        if (first->GetValue() != second->GetValue())
+            return false;
         return CmpTraverse(first->GetLeft(), second->GetLeft()) &&
                CmpTraverse(first->GetRight(), second->GetRight());
     }
@@ -301,76 +314,69 @@ public:
         return head_;
     }
 
-    Node<T> *insertation(Node<T> *root, T value) {
-        if (root == nullptr) return new Node<T>(value);
-        else if (value < root->GetValue()) root->setLeft(insertation(root->GetLeft(), value));
-        else if (value > root->GetValue()) root->setRight(insertation(root->GetRight(), value));
-        return root;
+    void Insert(T value) {
+        head_ = this->InsertPrivate(this->GetHead(),value);
     }
 
-    void insert(T value) {
-        head_ = this->insertation(this->GetHead(),value);
-    }
-
-    void map(T (*func)(T))
+    void Map(T (*func)(T))
     {
         this->FuncMap(this->GetHead(), func);
     }
 
-    void where(bool(*func)(int))
+    void Where(bool(*func)(int))
     {
         this->FuncWhere(this->GetHead(), func);
     }
 
-    int reduce(T (*func)(T, T))
+    int Reduce(T (*func)(T, T))
     {
         int result = 0;
         this->FuncReduce(this->GetHead(), func, &result);
         return result;
     }
 
-    complex reduceCompl(T (*func)(T, T))
+    complex ReduceCompl(T (*func)(T, T))
     {
         complex result(0, 0);
         this->FuncReduce(this->GetHead(), func, &result);
         return result;
     }
 
-    void deleteElem(T value) {
-        head_ = deleteNode(head_, value);
+    void DeleteElem(T value) {
+        head_ = DeleteNode(head_, value);
     }
 
-    void merge(const Tree& other) {
-        head_ = mergeTrees(head_, other.GetHead());
-        correctTree();
+    void Merge(const Tree& other) {
+        head_ = MergeTrees(head_, other.GetHead());
+        CorrectTree();
     }
 
-    void traverseTree(const traverse order, T* result) {
+    void TraverseTree(const Traverse order, T* result) {
         int index = 0;
         switch (order) {
-            case traverse::KLP:
-                traverseKLP(head_, result, index);
+            case Traverse::KLP:
+                TraverseKLP(head_, result, index);
             break;
-            case traverse::KPL:
-                traverseKPL(head_, result, index);
+            case Traverse::KPL:
+                TraverseKPL(head_, result, index);
             break;
-            case traverse::LPK:
-                traverseLPK(head_, result, index);
+            case Traverse::LPK:
+                TraverseLPK(head_, result, index);
             break;
-            case traverse::LKP:
-                traverseLKP(head_, result, index);
+            case Traverse::LKP:
+                TraverseLKP(head_, result, index);
             break;
-            case traverse::PLK:
-                traversePLK(head_, result, index);
+            case Traverse::PLK:
+                TraversePLK(head_, result, index);
             break;
-            case traverse::PKL:
-                traversePKL(head_, result, index);
+            case Traverse::PKL:
+                TraversePKL(head_, result, index);
             break;
         }
     }
 
-    void clear() {
-        deleteTree(head_);
+    void Clear() {
+        DeleteTree(head_);
         head_ = nullptr;
     }
 };

@@ -14,8 +14,8 @@ namespace s_s
     typedef unsigned char uchar;
     typedef unsigned long long ullong;
 
-    const uchar MAX_LEN = 11;
-    const ullong N_HASH = static_cast<ullong>(-1);
+    constexpr uchar MAX_LEN = 11;
+    constexpr ullong N_HASH = static_cast<ullong>(-1);
 
     constexpr ullong raise_128_to(const uchar power)
     {

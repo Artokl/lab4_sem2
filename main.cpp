@@ -31,7 +31,7 @@ int main() {
                 while(!std::cin.fail()) {
                     std::cout<<"Enter your element" << std::endl;
                     std::cin >> a;
-                    if (!std::cin.fail()) testInt.insert(a), size++;
+                    if (!std::cin.fail()) testInt.Insert(a), size++;
                 }
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -46,7 +46,7 @@ int main() {
                         CASE("ReturnBack"):
                         {
                             flag1 = 0;
-                            testInt.clear();
+                            testInt.Clear();
                             break;
                         }
                         CASE("RunTests"):
@@ -60,7 +60,7 @@ int main() {
                             const Tree<int> testInt1 = testInt;
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
-                            testInt.map(MapFunc);
+                            testInt.Map(MapFunc);
                             std::cout << "ResultTree:" << std::endl;
                             printTree(testInt);
                             testInt = testInt1;
@@ -71,7 +71,7 @@ int main() {
                             const Tree<int> testInt1 = testInt;
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
-                            testInt.where(WhereFunc);
+                            testInt.Where(WhereFunc);
                             std::cout << "ResultTree:" << std::endl;
                             printTree(testInt);
                             testInt = testInt1;
@@ -81,7 +81,7 @@ int main() {
                         {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
-                            intReduceRes = testInt.reduce(ReduceFunc);
+                            intReduceRes = testInt.Reduce(ReduceFunc);
                             std::cout << "Result:" << intReduceRes << std::endl;
                             break;
                         }
@@ -96,13 +96,13 @@ int main() {
                             while(!std::cin.fail()) {
                                 std::cout<<"Enter your element" << std::endl;
                                 std::cin >> a;
-                                if (!std::cin.fail()) testInt1.insert(a);
+                                if (!std::cin.fail()) testInt1.Insert(a);
                             }
                             std::cin.clear();
                             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                             std::cout << "Your second tree:\n";
                             printTree(testInt1);
-                            testInt.merge(testInt1);
+                            testInt.Merge(testInt1);
                             std::cout << "Your result tree:\n";
                             printTree(testInt);
                             testInt = testInt2;
@@ -124,7 +124,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
                             int result[size];
-                            testInt.traverseTree(traverse::KLP, result);
+                            testInt.TraverseTree(Traverse::KLP, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -137,7 +137,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
                             int result[size];
-                            testInt.traverseTree(traverse::KPL, result);
+                            testInt.TraverseTree(Traverse::KPL, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -150,7 +150,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
                             int result[size];
-                            testInt.traverseTree(traverse::LPK, result);
+                            testInt.TraverseTree(Traverse::LPK, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -163,7 +163,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
                             int result[size];
-                            testInt.traverseTree(traverse::LKP, result);
+                            testInt.TraverseTree(Traverse::LKP, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -176,7 +176,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
                             int result[size];
-                            testInt.traverseTree(traverse::PLK, result);
+                            testInt.TraverseTree(Traverse::PLK, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -189,7 +189,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testInt);
                             int result[size];
-                            testInt.traverseTree(traverse::PKL, result);
+                            testInt.TraverseTree(Traverse::PKL, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -214,7 +214,7 @@ int main() {
                 while(!std::cin.fail()) {
                     std::cout<<"Enter your element" << std::endl;
                     std::cin >> b;
-                    if (!std::cin.fail()) testComplex.insert(b), size++;
+                    if (!std::cin.fail()) testComplex.Insert(b), size++;
                 }
                 std::cin.clear();
                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -229,7 +229,7 @@ int main() {
                         CASE("ReturnBack"):
                         {
                             flag1 = 0;
-                            testComplex.clear();
+                            testComplex.Clear();
                             break;
                         }
                         CASE("RunTests"):
@@ -243,7 +243,7 @@ int main() {
                             const Tree<complex> testComplex1 = testComplex;
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testComplex);
-                            testComplex.map(MapFunc);
+                            testComplex.Map(MapFunc);
                             std::cout << "ResultTree:" << std::endl;
                             printTree(testComplex);
                             testComplex = testComplex1;
@@ -253,7 +253,7 @@ int main() {
                         {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testComplex);
-                            ComplexReduceRes = testComplex.reduceCompl(ReduceFunc);
+                            ComplexReduceRes = testComplex.ReduceCompl(ReduceFunc);
                             std::cout << "Result:" << ComplexReduceRes << std::endl;
                             break;
                         }
@@ -268,13 +268,13 @@ int main() {
                             while(!std::cin.fail()) {
                                 std::cout<<"Enter your element" << std::endl;
                                 std::cin >> b;
-                                if (!std::cin.fail()) testComplex1.insert(b);
+                                if (!std::cin.fail()) testComplex1.Insert(b);
                             }
                             std::cin.clear();
                             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                             std::cout << "Your second tree:\n";
                             printTree(testComplex1);
-                            testComplex.merge(testComplex1);
+                            testComplex.Merge(testComplex1);
                             std::cout << "Your result tree:\n";
                             printTree(testComplex);
                             testComplex = testComplex2;
@@ -296,7 +296,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testComplex);
                             complex result[size];
-                            testComplex.traverseTree(traverse::KLP, result);
+                            testComplex.TraverseTree(Traverse::KLP, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -309,7 +309,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testComplex);
                             complex result[size];
-                            testComplex.traverseTree(traverse::KPL, result);
+                            testComplex.TraverseTree(Traverse::KPL, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -322,7 +322,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testComplex);
                             complex result[size];
-                            testComplex.traverseTree(traverse::LPK, result);
+                            testComplex.TraverseTree(Traverse::LPK, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -335,7 +335,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testComplex);
                             complex result[size];
-                            testComplex.traverseTree(traverse::LKP, result);
+                            testComplex.TraverseTree(Traverse::LKP, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -348,7 +348,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testComplex);
                             complex result[size];
-                            testComplex.traverseTree(traverse::PLK, result);
+                            testComplex.TraverseTree(Traverse::PLK, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
@@ -361,7 +361,7 @@ int main() {
                             std::cout << "OriginalTree:" << std::endl;
                             printTree(testComplex);
                             complex result[size];
-                            testComplex.traverseTree(traverse::PKL, result);
+                            testComplex.TraverseTree(Traverse::PKL, result);
                             std::cout << "Result: ";
                             for (int i = 0; i < size; ++i) {
                                 std::cout << result[i] << " ";
