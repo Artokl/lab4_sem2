@@ -9,6 +9,7 @@ private:
     T node_;
     Node* right_;
     Node* left_;
+    int height_;
 
     void SetLeft(Node* node) {
         left_ = node;
@@ -24,9 +25,9 @@ private:
 
     template<typename> friend class Tree;
 public:
-    Node() : node_(0), right_(nullptr), left_(nullptr) {}
+    Node() : node_(0), right_(nullptr), left_(nullptr), height_(1) {}
 
-    explicit Node(T value) : node_(value), right_(nullptr), left_(nullptr) {}
+    explicit Node(T value) : node_(value), right_(nullptr), left_(nullptr), height_(1) {}
 
     T GetValue() {
         return node_;
@@ -38,6 +39,14 @@ public:
 
     Node *GetLeft() {
         return left_;
+    }
+
+    int GetHeight() const {
+        return height_;
+    }
+
+    void SetHeight(int height) {
+        height_ = height;
     }
 
     ~Node() {
@@ -59,6 +68,7 @@ template <typename T>
 class Tree {
 private:
     Node<T>* head_;
+
     void DeleteTree(Node<T> *elem) {
         if (elem == nullptr)
         {
@@ -77,6 +87,85 @@ private:
         newNode->SetLeft(CopyTree(node->GetLeft()));
         newNode->SetRight(CopyTree(node->GetRight()));
         return newNode;
+    }
+
+    static int Height(Node<T>* node) {
+        return node ? node->GetHeight() : 0;
+    }
+
+    int BalanceFactor(Node<T>* node) {
+        return node ? Height(node->GetLeft()) - Height(node->GetRight()) : 0;
+    }
+
+    void UpdateHeight(Node<T>* node) {
+        if (node) {
+            const int leftHeight = Height(node->GetLeft());
+            const int rightHeight = Height(node->GetRight());
+            node->SetHeight((leftHeight > rightHeight ? leftHeight : rightHeight) + 1);
+        }
+    }
+
+    Node<T>* RotateRight(Node<T>* y) {
+        Node<T>* x = y->GetLeft();
+        Node<T>* T2 = x->GetRight();
+
+        x->SetRight(y);
+        y->SetLeft(T2);
+
+        UpdateHeight(y);
+        UpdateHeight(x);
+
+        return x;
+    }
+
+    Node<T>* RotateLeft(Node<T>* x) {
+        Node<T>* y = x->GetRight();
+        Node<T>* T2 = y->GetLeft();
+
+        y->SetLeft(x);
+        x->SetRight(T2);
+
+        UpdateHeight(x);
+        UpdateHeight(y);
+
+        return y;
+    }
+
+    Node<T>* Balance(Node<T>* node) {
+        UpdateHeight(node);
+        const int balance = BalanceFactor(node);
+
+        if (balance > 1) {
+            if (BalanceFactor(node->GetLeft()) < 0) {
+                node->SetLeft(RotateLeft(node->GetLeft()));
+            }
+            return RotateRight(node);
+        }
+
+        if (balance < -1) {
+            if (BalanceFactor(node->GetRight()) > 0) {
+                node->SetRight(RotateRight(node->GetRight()));
+            }
+            return RotateLeft(node);
+        }
+
+        return node;
+    }
+
+    Node<T>* InsertPrivate(Node<T>* node, T value) {
+        if (!node) {
+            return new Node<T>(value);
+        }
+
+        if (value < node->GetValue()) {
+            node->SetLeft(InsertPrivate(node->GetLeft(), value));
+        } else if (value > node->GetValue()) {
+            node->SetRight(InsertPrivate(node->GetRight(), value));
+        } else {
+            return node;
+        }
+
+        return Balance(node);
     }
 
     Node<T>* DeleteNode(Node<T>* root, T value) {
@@ -102,9 +191,8 @@ private:
             root->SetData(temp->GetValue());
             root->SetRight(DeleteNode(root->GetRight(), temp->GetValue()));
         }
-        return root;
+        return Balance(root);
     }
-
     Node<T>* FindMin(Node<T>* node) {
         Node<T>* current = node;
         while (current && current->GetLeft() != nullptr) {
@@ -234,19 +322,10 @@ private:
         result[index++] = node->GetValue();
         TraversePKL(node->GetLeft(), result, index);
     }
-    Node<T> *InsertPrivate(Node<T> *root, T value) {
-        if (root == nullptr)
-            return new Node<T>(value);
-        else if (value < root->GetValue())
-            root->SetLeft(InsertPrivate(root->GetLeft(), value));
-        else if (value > root->GetValue())
-            root->SetRight(InsertPrivate(root->GetRight(), value));
-        return root;
-    }
 public:
-    Tree () : head_(nullptr) {}
+    Tree() : head_(nullptr) {}
 
-    explicit Tree (Node<T>* head) : head_(head) {}
+    explicit Tree(Node<T>* head) : head_(head) {}
 
     Tree(const Tree& other) {
         head_ = CopyTree(other.head_);
@@ -263,6 +342,18 @@ public:
 
     ~Tree() {
         DeleteTree(this->GetHead());
+    }
+
+    Node<T>* GetHead() const {
+        return head_;
+    }
+
+    void Insert(T value) {
+        head_ = this->InsertPrivate(this->GetHead(), value);
+    }
+
+    void DeleteElem(T value) {
+        head_ = DeleteNode(head_, value);
     }
 
     Node<T> *Find(T value) {
@@ -310,14 +401,6 @@ public:
         return CmpTraverse(res, t.GetHead());
     }
 
-    Node<T> *GetHead() const {
-        return head_;
-    }
-
-    void Insert(T value) {
-        head_ = this->InsertPrivate(this->GetHead(),value);
-    }
-
     void Map(T (*func)(T))
     {
         this->FuncMap(this->GetHead(), func);
@@ -341,11 +424,6 @@ public:
         this->FuncReduce(this->GetHead(), func, &result);
         return result;
     }
-
-    void DeleteElem(T value) {
-        head_ = DeleteNode(head_, value);
-    }
-
     void Merge(const Tree& other) {
         head_ = MergeTrees(head_, other.GetHead());
         CorrectTree();

@@ -187,11 +187,10 @@ void TestMergeTreeComplex() {
     testInt1.Insert(c1);
     testInt1.Insert(d1);
     testInt.Merge(testInt1);
-    assert(testInt.Find(complex(7,3)) != nullptr);
-    assert(testInt.Find(complex(12,5)) != nullptr);
-    assert(testInt.Find(complex(4,13)) != nullptr);
-    assert(testInt.Find(complex(2,4)) != nullptr);
-    assert(testInt.Find(complex(7,2)) != nullptr);
+    assert(testInt.Find(complex(5,9)) != nullptr);
+    assert(testInt.Find(complex(3,9)) != nullptr);
+    assert(testInt.Find(complex(8,6)) != nullptr);
+    assert(testInt.Find(complex(16,3)) != nullptr);
 }
 void Tests() {
     TestCreateTree();
